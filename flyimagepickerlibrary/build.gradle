@@ -23,7 +23,8 @@ android {
     }
 
 }
-
+apply from: 'https://raw.githubusercontent.com/rzrasel/maven-upload/master/bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/rzrasel/maven-upload/master/publications.gradle'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
