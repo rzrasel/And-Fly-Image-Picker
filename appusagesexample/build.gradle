@@ -17,8 +17,7 @@ android {
         }
     }
 }
-apply from: 'https://raw.githubusercontent.com/rzrasel/maven-upload/master/bintray.gradle'
-apply from: 'https://raw.githubusercontent.com/rzrasel/maven-upload/master/publications.gradle'
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
