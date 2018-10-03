@@ -6,8 +6,8 @@ android {
         applicationId "rz.adept.flyimagepicker"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 1000001
+        versionName "100.00.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,7 +17,8 @@ android {
         }
     }
 }
-
+apply from: 'https://raw.githubusercontent.com/rzrasel/maven-upload/master/bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/rzrasel/maven-upload/master/publications.gradle'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
