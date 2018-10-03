@@ -1,10 +1,10 @@
-# And-Fly-Image-Picker
-And Fly Image Picker
+# And-Fly-Database
+And Fly Database
 
 ### GIT Command
 ```git_command
 git init
-git remote add origin https://github.com/rzrasel/And-Fly-Image-Picker.git
+git remote add origin https://github.com/rzrasel/And-Fly-Database.git
 git remote -v
 git fetch && git checkout master
 git add .
