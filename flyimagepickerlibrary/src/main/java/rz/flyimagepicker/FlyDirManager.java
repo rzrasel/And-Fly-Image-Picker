@@ -58,7 +58,7 @@ public class FlyDirManager {
     public String setRootCacheDirectory() {
         //setRootDirectory(getSysDirectory());
         rootDirectory = getSysRootCacheDirectory();
-        directory = rootDirectory;
+        directory = "no_param: " + rootDirectory;
         log("PRINT: " + directory);
         return directory;
     }
@@ -74,6 +74,11 @@ public class FlyDirManager {
             rootDirectory = getRootCacheDir() + "/" + argDirectoryName;
             directory = rootDirectory;
         }*/
+        if (argDirectoryName == null) {
+            return setRootCacheDirectory();
+        } else if (argDirectoryName.trim().isEmpty()) {
+            return setRootCacheDirectory();
+        }
         rootDirectory = getRootCacheDir() + "/" + argDirectoryName;
         directory = rootDirectory;
         /*FlyDirFileManager flyDirFileManager = new FlyDirFileManager();

@@ -68,18 +68,23 @@ public class FlyImageManager {
         }.setRootCacheDirectory();
         return this;
     }*/
-    public FlyImageManager set() {
+    public FlyImageManager set(String argParam) {
         FlyDirManager flyDirManager = new FlyDirManager(context) {
             @Override
             public String setRootCacheDirectory() {
-                return super.setRootCacheDirectory();
+                return "from- " + super.setRootCacheDirectory();
+            }
+
+            @Override
+            public String setRootCacheDirectory(String argDirectoryName) {
+                return super.setRootCacheDirectory(argDirectoryName);
             }
         };
-        checkMe(flyDirManager);
+        checkMe(flyDirManager, argParam);
         return this;
     }
 
-    private void checkMe(FlyDirManager argFlyDirManager) {
+    private void checkMe(FlyDirManager argFlyDirManager, String argParam) {
         log(argFlyDirManager.setRootCacheDirectory().toString());
     }
 

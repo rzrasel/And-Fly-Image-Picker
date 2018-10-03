@@ -20,7 +20,7 @@ public class ActSplash extends AppCompatActivity {
         FlyImageManager flyImageManager = new FlyImageManager(context);
         /*flyImageManager.setRootDirectory("me");
         flyImageManager.setRootCacheDirectory();*/
-        flyImageManager.set();
+        flyImageManager.set("");
         /*log(flyImageManager.getFilePath("test"));
         log(flyImageManager.withDirectoryPath("dir1").getFilePath("test_file"));
         log(flyImageManager.withDirectoryPath("dir2").getFilePath("test_file1"));*/
