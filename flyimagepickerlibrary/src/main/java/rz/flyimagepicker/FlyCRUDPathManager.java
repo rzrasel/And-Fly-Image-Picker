@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class FlyCRUDDirFileManager {
-    public boolean isDebug = true;
+public class FlyCRUDPathManager {
+    public static boolean isDebug = true;
 
-    public void makeDirs(String argDirectoryPath) {
+    public static void onCreateDirs(String argDirectoryPath) {
         File file = new File(argDirectoryPath);
         if (!isDirExists(file)) {
             file.mkdirs();
@@ -21,25 +21,25 @@ public class FlyCRUDDirFileManager {
         }
     }
 
-    private boolean isDirExists(String argFile) {
+    public static boolean isDirExists(String argFile) {
         File file = new File(argFile);
         return (file.exists() && file.isDirectory());
     }
 
-    private boolean isDirExists(File argFile) {
+    public static boolean isDirExists(File argFile) {
         return (argFile.exists() && argFile.isDirectory());
     }
 
-    private boolean isFileExists(String argFile) {
+    public static boolean isFileExists(String argFile) {
         File file = new File(argFile);
         return file.exists() && file.isFile();
     }
 
-    private boolean isFileExists(File argFile) {
+    public static boolean isFileExists(File argFile) {
         return argFile.exists() && argFile.isFile();
     }
 
-    public void fileCopy(File argSourcePath, File argDestinationPath) {
+    public static void onFileCopy(File argSourcePath, File argDestinationPath) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
@@ -67,7 +67,7 @@ public class FlyCRUDDirFileManager {
         }
     }
 
-    public boolean deleteFile(String argFilePath) {
+    public static boolean deleteFile(String argFilePath) {
         File file = new File(argFilePath);
         if (file.exists()) {
             file.delete();
@@ -75,10 +75,9 @@ public class FlyCRUDDirFileManager {
         return file.exists();
     }
 
-    private void log(String argMessage) {
+    private static void log(String argMessage) {
         if (isDebug) {
-            System.out.println();
-            System.out.println("FlyDirFileManager_DEBUG_LOG_PRINT: " + argMessage);
+            System.out.println("FlyCRUDPathManager_DEBUG_LOG_PRINT: " + argMessage);
         }
         boolean installedMaps = false;
 

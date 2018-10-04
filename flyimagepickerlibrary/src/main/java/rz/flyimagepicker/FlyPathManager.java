@@ -3,12 +3,13 @@ package rz.flyimagepicker;
 import android.content.Context;
 import android.os.Environment;
 
-public class FlyDirManager {
+public class FlyPathManager {
+    //FlyDirManager
     private Context context;
     private String rootDirectory;
     private String directory;
 
-    public FlyDirManager(Context argContext) {
+    public FlyPathManager(Context argContext) {
         context = argContext;
     }
 
@@ -32,19 +33,23 @@ public class FlyDirManager {
     }*/
 
 
-    public FlyDirManager setRootDirectory() {
+    protected FlyPathManager getRootDirectory() {
         //setRootDirectory(getSysDirectory());
         rootDirectory = getSysDirectory();
         directory = rootDirectory;
         return this;
     }
 
-    public FlyDirManager setRootDirectory(String argDirectoryName) {
+    public String getRequestPath(FlyPathManager argFlyPathManager, String argStrPath) {
+        return argFlyPathManager.getRootCacheDirectory(argStrPath).toString();
+    }
+
+    protected FlyPathManager getRootDirectory(String argDirectoryName) {
         if (argDirectoryName == null) {
-            setRootDirectory();
+            getRootDirectory();
             return this;
         } else if (argDirectoryName.trim().isEmpty()) {
-            setRootDirectory();
+            getRootDirectory();
             return this;
         } else {
             rootDirectory = getRootDir() + "/" + argDirectoryName;
@@ -55,15 +60,15 @@ public class FlyDirManager {
         return this;
     }
 
-    public String setRootCacheDirectory() {
+    protected String getRootCacheDirectory() {
         //setRootDirectory(getSysDirectory());
         rootDirectory = getSysRootCacheDirectory();
-        directory = "no_param: " + rootDirectory;
-        log("PRINT: " + directory);
+        directory = rootDirectory;
+        //log("PRINT: " + directory);
         return directory;
     }
 
-    public String setRootCacheDirectory(String argDirectoryName) {
+    protected String getRootCacheDirectory(String argDirectoryName) {
         /*if (argDirectoryName == null) {
             setRootCacheDirectory();
             return this;
@@ -75,15 +80,15 @@ public class FlyDirManager {
             directory = rootDirectory;
         }*/
         if (argDirectoryName == null) {
-            return setRootCacheDirectory();
+            return getRootCacheDirectory();
         } else if (argDirectoryName.trim().isEmpty()) {
-            return setRootCacheDirectory();
+            return getRootCacheDirectory();
         }
         rootDirectory = getRootCacheDir() + "/" + argDirectoryName;
         directory = rootDirectory;
         /*FlyDirFileManager flyDirFileManager = new FlyDirFileManager();
         flyDirFileManager.makeDirs(directory);*/
-        log("PRINT: " + directory);
+        //log("PRINT: " + directory);
         return directory;
     }
 
