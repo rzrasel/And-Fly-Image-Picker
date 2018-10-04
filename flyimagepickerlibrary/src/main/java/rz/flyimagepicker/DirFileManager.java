@@ -30,6 +30,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Deprecated
 public class DirFileManager {
     //cache
     private Context context;
@@ -220,7 +221,7 @@ public class DirFileManager {
                     Uri selectedImage = argData.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     Cursor cursor = context.getContentResolver()
-                        .query(selectedImage, filePathColumn, null, null, null);
+                            .query(selectedImage, filePathColumn, null, null, null);
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String picturePath = cursor.getString(columnIndex);

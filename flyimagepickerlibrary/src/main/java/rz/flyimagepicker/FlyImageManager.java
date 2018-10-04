@@ -57,6 +57,27 @@ public class FlyImageManager {
         }
     }
 
+    public void setExternalPath(String argStrDirPath) {
+        FlyPathManager flyPathManager = new FlyPathManager(context) {
+            @Override
+            public String getRootDirectory() {
+                return super.getRootDirectory();
+            }
+
+            @Override
+            public String getRootDirectory(String argDirectoryName) {
+                return super.getRootDirectory(argDirectoryName);
+            }
+        };
+        workingDirectory = flyPathManager.getRequestRootPath(flyPathManager, argStrDirPath);
+        referDirectory = workingDirectory;
+        if (argStrDirPath != null) {
+            if (!argStrDirPath.trim().isEmpty()) {
+                FlyCRUDPathManager.onCreateDirs(workingDirectory);
+            }
+        }
+    }
+
     public void setCachePath(String argStrDirPath) {
         FlyPathManager flyPathManager = new FlyPathManager(context) {
             @Override

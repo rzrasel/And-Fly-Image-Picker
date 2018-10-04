@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import rz.flyimagepicker.DirFileManager;
 import rz.flyimagepicker.FlyCRUDPathManager;
 import rz.flyimagepicker.FlyImageManager;
 import rz.flyimagepicker.FlyImagePickerManager;

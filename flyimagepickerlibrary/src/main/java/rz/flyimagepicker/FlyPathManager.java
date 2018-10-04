@@ -40,6 +40,10 @@ public class FlyPathManager {
         return directory;
     }
 
+    public String getRequestRootPath(FlyPathManager argFlyPathManager, String argStrPath) {
+        return argFlyPathManager.getRootCacheDirectory(argStrPath).toString();
+    }
+
     public String getRequestCachePath(FlyPathManager argFlyPathManager, String argStrPath) {
         return argFlyPathManager.getRootCacheDirectory(argStrPath).toString();
     }
