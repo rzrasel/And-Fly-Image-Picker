@@ -39,6 +39,37 @@ public class FlyCRUDPathManager {
         return argFile.exists() && argFile.isFile();
     }
 
+    public static void onFileCopy(String argSourcePath, String argDestinationPath) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        File file = null;
+        try {
+            file = new File(argSourcePath);
+            inputStream = new FileInputStream(file);
+            file = new File(argDestinationPath);
+            outputStream = new FileOutputStream(file);
+            byte[] byteArray = new byte[1024];
+            int length;
+            while ((length = inputStream.read(byteArray)) > 0) {
+                outputStream.write(byteArray, 0, length);
+            }
+        } catch (FileNotFoundException e) {
+            //e.printStackTrace();
+            log("Error: " + e.getMessage());
+        } catch (IOException e) {
+            //e.printStackTrace();
+            log("Error: " + e.getMessage());
+        } finally {
+            try {
+                outputStream.close();
+                inputStream.close();
+            } catch (IOException e) {
+                //e.printStackTrace();
+                log("Error: " + e.getMessage());
+            }
+        }
+    }
+
     public static void onFileCopy(File argSourcePath, File argDestinationPath) {
         InputStream inputStream = null;
         OutputStream outputStream = null;

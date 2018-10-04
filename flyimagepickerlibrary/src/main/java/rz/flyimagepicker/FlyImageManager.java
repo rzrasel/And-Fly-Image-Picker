@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -58,16 +60,16 @@ public class FlyImageManager {
     public void setCachePath(String argStrDirPath) {
         FlyPathManager flyPathManager = new FlyPathManager(context) {
             @Override
-            protected String getRootCacheDirectory() {
+            public String getRootCacheDirectory() {
                 return super.getRootCacheDirectory();
             }
 
             @Override
-            protected String getRootCacheDirectory(String argDirectoryName) {
+            public String getRootCacheDirectory(String argDirectoryName) {
                 return super.getRootCacheDirectory(argDirectoryName);
             }
         };
-        workingDirectory = flyPathManager.getRequestPath(flyPathManager, argStrDirPath);
+        workingDirectory = flyPathManager.getRequestCachePath(flyPathManager, argStrDirPath);
         referDirectory = workingDirectory;
         if (argStrDirPath != null) {
             if (!argStrDirPath.trim().isEmpty()) {
@@ -130,7 +132,13 @@ public class FlyImageManager {
     }
 
     public FlyImageManager withResize() {
-        bitmap = getResizedBitmap(bitmap, width, height);
+        if (width > 0 && height > 0) {
+            bitmap = getResizedBitmap(bitmap, width, height);
+        } else if (width > 0 && height <= 0) {
+            bitmap = getResizedBitmapByWidth(bitmap, width);
+        } else if (width <= 0 && height > 0) {
+            bitmap = getResizedBitmapByHeight(bitmap, height);
+        }
         return this;
     }
 
@@ -183,7 +191,7 @@ public class FlyImageManager {
         }
     }
 
-    public void copy(ImageView argImageView, int argQuality, Bitmap.CompressFormat argCompressFormat) {
+    private void copy(ImageView argImageView, int argQuality, Bitmap.CompressFormat argCompressFormat) {
         try {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) argImageView.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -205,7 +213,7 @@ public class FlyImageManager {
         }
     }
 
-    public void copy(String argSourcePath, int argQuality, Bitmap.CompressFormat argCompressFormat) {
+    private void copy(String argSourcePath, int argQuality, Bitmap.CompressFormat argCompressFormat) {
         try {
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(referFullFilePath, bmOptions);
@@ -223,7 +231,7 @@ public class FlyImageManager {
         }
     }
 
-    public void copy(Bitmap argBitmap, int argQuality, Bitmap.CompressFormat argCompressFormat) {
+    private void copy(Bitmap argBitmap, int argQuality, Bitmap.CompressFormat argCompressFormat) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             argBitmap.compress(argCompressFormat, argQuality, byteArrayOutputStream);
@@ -245,6 +253,19 @@ public class FlyImageManager {
             bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             //imageView.setImageBitmap(myBitmap);
         }
+        return bitmap;
+    }
+
+    public Drawable getBitmapToDrawable(Bitmap argBitmap) {
+        return new BitmapDrawable(context.getResources(), argBitmap);
+    }
+
+    public Bitmap getBitmapFromView(ImageView argImageView) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) argImageView.getDrawable();
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        /*argImageView.setDrawingCacheEnabled(true);
+        argImageView.buildDrawingCache(true);
+        Bitmap bitmap = argImageView.getDrawingCache();*/
         return bitmap;
     }
 
@@ -285,6 +306,101 @@ public class FlyImageManager {
             return argBitmap;
         }
     }
+
+    public Bitmap getResizedBitmapByWidth(Bitmap argBitmap, int argTargetWidth) {
+        if (argTargetWidth > 0) {
+            int width = argBitmap.getWidth();
+            int height = argBitmap.getHeight();
+            float aspectRatio = width / height;
+            int targetWidth = argTargetWidth;
+            int targetHeight = Math.round(width / aspectRatio);
+
+            int finalWidth = 0;
+            int finalHeight = 0;
+
+
+            if (width > height) {
+                // landscape
+                float ratio = (float) width / targetWidth;
+                finalWidth = targetWidth;
+                finalHeight = (int) (height / ratio);
+            } else if (height > width) {
+                // portrait
+                float ratio = (float) height / targetHeight;
+                finalWidth = (int) (width / ratio);
+                finalHeight = targetHeight;
+            } else {
+                // square
+                float ratio = (float) width / targetWidth;
+                finalWidth = targetWidth;
+                finalHeight = (int) (height / ratio);
+            }
+            Bitmap bitmap = Bitmap.createScaledBitmap(argBitmap, finalWidth, finalHeight, true);
+            //Bitmap background = Bitmap.createBitmap((int)finalWidth, (int)finalHeight, Bitmap.Config.ARGB_8888);
+            log("Image size: " + width + " - " + height);
+            log("Final size: " + finalWidth + " - " + finalHeight);
+            return bitmap;
+
+        } else {
+            log("ERROR_IMAGE_SIZE");
+            return argBitmap;
+        }
+    }
+
+    public Bitmap getResizedBitmapByHeight(Bitmap argBitmap, int argTargetHeight) {
+        if (argTargetHeight > 0) {
+            int width = argBitmap.getWidth();
+            int height = argBitmap.getHeight();
+            float aspectRatio = width / height;
+            int targetWidth = Math.round(height / aspectRatio);
+            int targetHeight = argTargetHeight;
+
+            int finalWidth = 0;
+            int finalHeight = 0;
+
+
+            if (width > height) {
+                // landscape
+                float ratio = (float) width / targetHeight;
+                finalWidth = targetWidth;
+                finalHeight = (int) (height / ratio);
+            } else if (height > width) {
+                // portrait
+                float ratio = (float) height / targetHeight;
+                finalWidth = (int) (width / ratio);
+                finalHeight = targetHeight;
+            } else {
+                // square
+                float ratio = (float) height / targetHeight;
+                finalWidth = (int) (width / ratio);
+                finalHeight = targetHeight;
+            }
+            Bitmap bitmap = Bitmap.createScaledBitmap(argBitmap, finalWidth, finalHeight, true);
+            //Bitmap background = Bitmap.createBitmap((int)finalWidth, (int)finalHeight, Bitmap.Config.ARGB_8888);
+            log("Image size: " + width + " - " + height);
+            log("Final size: " + finalWidth + " - " + finalHeight);
+            return bitmap;
+
+        } else {
+            log("ERROR_IMAGE_SIZE");
+            return argBitmap;
+        }
+    }
+
+
+    public String getEncodedBitmap(Bitmap argBitmap) {
+        //ImageView imageView = null; // new ImageView();
+        /*argImageView.buildDrawingCache();
+        Bitmap bitmap = argImageView.getDrawingCache();*/
+        ByteArrayOutputStream baOutStream = new ByteArrayOutputStream();
+        argBitmap.compress(Bitmap.CompressFormat.PNG, 100, baOutStream); //bm is the bitmap object
+        byte[] byteArray = baOutStream.toByteArray();
+
+        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return encodedImage;
+        //http://stackoverflow.com/questions/16446841/android-send-image-file-to-the-server-db
+    }
+
 
     public enum ImageFormat {
         JPEG("jpg"),

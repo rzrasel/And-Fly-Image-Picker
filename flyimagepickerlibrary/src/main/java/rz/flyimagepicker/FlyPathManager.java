@@ -33,31 +33,29 @@ public class FlyPathManager {
     }*/
 
 
-    protected FlyPathManager getRootDirectory() {
+    public String getRootDirectory() {
         //setRootDirectory(getSysDirectory());
         rootDirectory = getSysDirectory();
         directory = rootDirectory;
-        return this;
+        return directory;
     }
 
-    public String getRequestPath(FlyPathManager argFlyPathManager, String argStrPath) {
+    public String getRequestCachePath(FlyPathManager argFlyPathManager, String argStrPath) {
         return argFlyPathManager.getRootCacheDirectory(argStrPath).toString();
     }
 
-    protected FlyPathManager getRootDirectory(String argDirectoryName) {
+    public String getRootDirectory(String argDirectoryName) {
         if (argDirectoryName == null) {
-            getRootDirectory();
-            return this;
+            return getRootDirectory();
         } else if (argDirectoryName.trim().isEmpty()) {
-            getRootDirectory();
-            return this;
+            return getRootDirectory();
         } else {
             rootDirectory = getRootDir() + "/" + argDirectoryName;
             directory = rootDirectory;
         }
         /*FlyDirFileManager flyDirFileManager = new FlyDirFileManager();
         flyDirFileManager.makeDirs(directory);*/
-        return this;
+        return directory;
     }
 
     protected String getRootCacheDirectory() {
