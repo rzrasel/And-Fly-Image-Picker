@@ -192,6 +192,7 @@ public class FlyImageManager {
         int rangeValue = argMaxValue - argMinValue + 1;
         Random random = new Random();
         retVal = random.nextInt(rangeValue) + argMinValue;
+        //random.nextInt((max - min) + 1) + min;
         return retVal;
     }
 
