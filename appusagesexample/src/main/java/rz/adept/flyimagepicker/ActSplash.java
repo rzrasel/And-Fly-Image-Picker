@@ -148,3 +148,4 @@ public class ActSplash extends AppCompatActivity {
         System.out.println("ActSplash_DEBUG_LOG_PRINT: " + argMessage);
     }
 }
+//https://stackoverflow.com/questions/4837715/how-to-resize-a-bitmap-in-android
